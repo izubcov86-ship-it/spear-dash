@@ -8,21 +8,24 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
-
+      
       - name: Set up JDK 21
         uses: actions/setup-java@v4
         with:
           java-version: 21
           distribution: temurin
-
+      
+      - name: Setup Gradle
+        run: |
+          echo "distributionUrl=https\\://services.gradle.org/distributions/gradle-8.11-bin.zip" > gradle/wrapper/gradle-wrapper.properties
+      
       - name: Build with Gradle
         run: |
           chmod +x gradlew
-          ./gradlew build
-
+          ./gradlew build --no-daemon
+      
       - name: Upload mod
         uses: actions/upload-artifact@v4
         with:
