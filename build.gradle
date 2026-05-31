@@ -1,35 +1,50 @@
-plugins {
-    id 'fabric-loom' version '1.6.11'
-    id 'maven-publish'
-}
-
-version = '1.0.0'
-group = 'com.knight.speardash'
-
-base {
-    archivesName = 'speardash'
-}
-
-repositories {
-    mavenCentral()
-    maven {
-        name = "Fabric"
-        url = "https://maven.fabricmc.net/"
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        maven { url = 'https://maven.fabricmc.net/' }
+        mavenCentral()
     }
 }
 
+plugins {
+    id 'fabric-loom' version '1.7-SNAPSHOT'
+    id 'maven-publish'
+}
+
+version = project.mod_version
+group = project.maven_group
+
+repositories {
+    mavenCentral()
+    maven { url = "https://maven.fabricmc.net/" }
+}
+
 dependencies {
-    minecraft "com.mojang:minecraft:1.20.4"
-    mappings "net.fabricmc:yarn:1.20.4+build.1:v2"
-    modImplementation "net.fabricmc:fabric-loader:0.15.11"
-    modImplementation "net.fabricmc.fabric-api:fabric-api:0.91.0+1.20.4"
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+    mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
+    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+}
+
+processResources {
+    inputs.property "version", project.version
+    filteringCharset "UTF-8"
+
+    filesMatching("fabric.mod.json") {
+        expand "version": project.version
+    }
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+    options.release = 17
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
+    withSourcesJar()
 }
 
-tasks.withType(JavaCompile).configureEach {
-    it.options.release = 17
+jar {
+    from("LICENSE") {
+        rename { "${it}_${project.archivesBaseName}"}
+    }
 }
