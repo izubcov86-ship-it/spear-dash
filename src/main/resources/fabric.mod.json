@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "id": "speardash",
+  "version": "1.0.0",
+  "name": "Spear Dash",
+  "description": "Auto-swap spear and dash ability",
+  "authors": ["V3RST Team"],
+  "license": "MIT",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "com.knight.speardash.SpearDashMod"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=0.15.11",
+    "minecraft": "~1.20.4",
+    "java": ">=17",
+    "fabric-api": "*"
+  }
+}
